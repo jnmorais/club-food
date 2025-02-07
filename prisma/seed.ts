@@ -1,7 +1,18 @@
 const { PrismaClient } = require("@prisma/client");
 
 const prismaClient = new PrismaClient();
+//async function cleanDatabase() {
+ // console.log("🗑️  Limpando o banco de dados...");
 
+//   await prismaClient.product.deleteMany({});
+//   await prismaClient.restaurant.deleteMany({});
+//   await prismaClient.category.deleteMany({});
+
+//   console.log("✅ Banco de dados limpo!");
+// }
+
+//async function main() {//
+// await cleanDatabase();
 const description =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec nisl lorem. Praesent pharetra, sapien ut fringilla malesuada, nisi felis ullamcorper ex, eu consectetur elit dolor sed dolor. Praesent orci mi, auctor aliquet semper vitae, volutpat quis augue. Cras porta sapien nec pharetra laoreet. Sed at velit sit amet mauris varius volutpat sit amet id mauris. Maecenas vitae mattis ante. Morbi nulla quam, sagittis at orci eu, scelerisque auctor neque.";
 
