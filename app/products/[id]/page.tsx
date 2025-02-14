@@ -18,19 +18,24 @@ const ProductPage = async ({ params: { id } }: ProductPageProps) => {
       restaurant: true,
     },
   });
-  const juices = await db.product.findMany({
+  const productsRestaurant = await db.product.findMany({
     where: {
-      category: {
-        name: "Sucos",
-      },
-      restaurant: {
-        id: product?.restaurant.id,
-      },
+      restaurantId: product?.restaurantId, 
+      id: { not: product?.id },
     },
     include: {
-      restaurant: true,
+      restaurant: { 
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+          deliveryTimeMinutes: true,
+          deliveryFee: true,
+        },
+      },
     },
   });
+  
   if (!product) {
     return notFound();
   }
@@ -39,7 +44,7 @@ const ProductPage = async ({ params: { id } }: ProductPageProps) => {
       {/* IMAGEM */}
       <ProductImage product={product} />
       {/* TITULO E PREÇO */}
-      <ProductDetails product={product} complementaryProducts={juices} />
+      <ProductDetails product={product} complementaryProducts={productsRestaurant} />
     </div>
   );
 };
