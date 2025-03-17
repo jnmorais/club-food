@@ -1,48 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { PrismaClient } from "@prisma/client";
 
-// Definindo um tipo para o cliente Prisma estendido
-type ExtendedPrismaClient = ReturnType<typeof prismaClientWithExtensions>;
-
-// Corrija a declaração global
 declare global {
-  var cachedPrisma: ExtendedPrismaClient | undefined;
+  var cachedPrisma: PrismaClient;
 }
 
-// Função para criar cliente Prisma com extensões
-function prismaClientWithExtensions() {
-  return new PrismaClient().$extends({
-    result: {
-      product: {
-        price: {
-          needs: { price: true },
-          compute(product) {
-            return product.price ? product.price.toNumber() : null;
-          },
-        },
-      },
-      restaurant: {
-        deliveryFee: {
-          needs: { deliveryFee: true },
-          compute(restaurant) {
-            return restaurant.deliveryFee
-              ? restaurant.deliveryFee.toNumber()
-              : null;
-          },
-        },
-      },
-    },
-  });
-}
-
-// Configuração do cliente Prisma
-let prisma: ExtendedPrismaClient;
+let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === "production") {
-  prisma = prismaClientWithExtensions();
+  prisma = new PrismaClient();
 } else {
   if (!global.cachedPrisma) {
-    global.cachedPrisma = prismaClientWithExtensions();
+    global.cachedPrisma = new PrismaClient();
   }
   prisma = global.cachedPrisma;
 }
