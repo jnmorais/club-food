@@ -57,7 +57,7 @@ const CartItem = ({ cartProduct }: CartItemProps) => {
 
           {/* QUANTIDADE */}
 
-          <div className="flex items-center gap-3 text-center">
+          <div className="flex items-center text-center">
             <Button
               size="icon"
               variant="ghost"
@@ -68,7 +68,7 @@ const CartItem = ({ cartProduct }: CartItemProps) => {
                 onClick={handleDecreaseQuantityClick}
               />
             </Button>
-            <span className="block w-3 text-xs">{cartProduct.quantity}</span>
+            <span className="block w-7 text-xs">{cartProduct.quantity}</span>
             <Button
               size="icon"
               className="h-7 w-7"
