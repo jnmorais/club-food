@@ -18,7 +18,11 @@ const MyOrder = async () => {
     },
     include: {
       restaurant: true,
-      products: true,
+      products: {
+        include: {
+          product: true,
+        },
+      },
     },
   });
 
@@ -27,7 +31,7 @@ const MyOrder = async () => {
       <Header />
 
       <div className="px-5 py-6">
-        <h2>Meus pedidos</h2>
+        <h2 className="pb-6 text-lg font-semibold">Meus pedidos</h2>
 
         <div className="space-y-3">
           {orders.map((order) => (
