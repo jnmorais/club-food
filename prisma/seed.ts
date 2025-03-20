@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prismaClient = new PrismaClient();
 //async function cleanDatabase() {
- // console.log("🗑️  Limpando o banco de dados...");
+// console.log("🗑️  Limpando o banco de dados...");
 
 //   await prismaClient.product.deleteMany({});
 //   await prismaClient.restaurant.deleteMany({});

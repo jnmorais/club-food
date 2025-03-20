@@ -15,6 +15,7 @@ model Restaurant {
   deliveryFee         Decimal    @db.Decimal(10, 2)
   products            Product[]
   categories          Category[] @relation("CategoryToRestaurant")
+  orders              Order[]
 }
 
 model Category {
@@ -34,8 +35,34 @@ model Product {
   restaurantId       String
   categoryId         String
   discountPercentage Int        @default(0)
+  createdAt          DateTime   @default(now())
   category           Category   @relation(fields: [categoryId], references: [id])
   restaurant         Restaurant @relation(fields: [restaurantId], references: [id])
+  orders             Order[]
+}
+
+model Order {
+  id                  String      @id @default(uuid())
+  userId              String
+  restaurantId        String
+  deliveryFee         Decimal     @db.Decimal(10, 2)
+  totalPrice          Decimal     @db.Decimal(10, 2)
+  totalDiscounts      Decimal     @db.Decimal(10, 2)
+  status              OrderStatus
+  createdAt           DateTime    @default(now())
+  subtotalPrice       Decimal     @db.Decimal(10, 2)
+  deliveryTimeMinutes Int
+  restaurant          Restaurant  @relation(fields: [restaurantId], references: [id])
+  user                User        @relation(fields: [userId], references: [id])
+  products            Product[]
+}
+
+enum OrderStatus {
+  CONFIRMED
+  CANCELED
+  PREPARING
+  DELIVERING
+  COMPLETED
 }
 
 model Account {
@@ -44,15 +71,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -76,6 +102,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  orders        Order[]
 
   @@map("users")
 }
