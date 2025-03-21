@@ -9,6 +9,7 @@ import { createOrder } from "../_actions/order";
 import { OrderStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,8 +20,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
-const Cart = () => {
+interface CartProps {
+  setIsOpen: (isOpen: boolean) => void;
+}
+const Cart = ({ setIsOpen }: CartProps) => {
+  const route = useRouter();
   const [isConfirmDialogOpen, setIsConfirmationDialogOpen] = useState(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
 
@@ -59,6 +65,19 @@ const Cart = () => {
         },
       });
       clearCart();
+      setIsOpen(false);
+
+      toast("Pedido criado com sucesso", {
+        description: (
+          <span className="text-black">
+            Você pode acompanha-lo na tela do seus pedidos
+          </span>
+        ),
+        action: {
+          label: "Meus Pedidos",
+          onClick: () => route.push("/my-orders"),
+        },
+      });
     } catch (error) {
       console.error(error);
     } finally {
